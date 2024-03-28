@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>级联选择地区示例</title>
 </head>
+
 <body>
     <div>
-        <select id="first">
+        <select id="first" onchange="changeProvince()">
             <option value="0">--请选择--</option>
         </select>
-        <select id="second">
-            <option value="0">--请选择--</option>
+        <select id="second" onchange="changeCity()">
+            <option value="0" >--请选择--</option>
         </select>
         <select id="third">
             <option value="0">--请选择--</option>
         </select>
-        
     </div>
+    <script src="./region.js"></script>
+    <script>
+        var first = document.getElementById('first');
+        for (var key in data) {
+            first.appendChild(new Option(data[key].name, key))
+        }
+
+        /* 选择省后再渲染市区，需要定义一个事件*/
+        function changeProvince() {
+            var code = first.options[first.selectedIndex].value;
+            var cities = data[code].child;
+            second.length = 1;
+            third.length=1;
+            for (var key in cities) {
+                second.appendChild(new Option(cities[key].name, key))
+            }
+        }
+        function changeCity(){
+            var code = second.options[second.selectedIndex].value;
+            var districts = cities[code].child;
+            for(var key in districts){
+                third.appendChild(new Option(districts[key],key));
+            }
+        }
+    </script>
 </body>
+
 </html>
